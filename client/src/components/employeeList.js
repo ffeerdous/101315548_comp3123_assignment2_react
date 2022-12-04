@@ -10,7 +10,7 @@ export default class employeeList extends Component {
     }
 
     getEmployees = () => {
-        const EMP_URL = "http://localhost:3001/api/emp/employees";
+        const EMP_URL = "https://fullstackassignment1-production.up.railway.app/api/emp/employees";
         axios.get(EMP_URL)
         .then(res => {
             this.setState({
