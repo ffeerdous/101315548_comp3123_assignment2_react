@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default class employeeList extends Component {
     constructor(props){
@@ -10,7 +11,7 @@ export default class employeeList extends Component {
     }
 
     getEmployees = () => {
-        const EMP_URL = "https://fullstackassignment1-production.up.railway.app/api/emp/employees";
+        const EMP_URL = "http://localhost:3001/api/emp/employees";
         axios.get(EMP_URL)
         .then(res => {
             this.setState({
@@ -26,11 +27,21 @@ export default class employeeList extends Component {
     componentDidMount = () => {
         this.getEmployees()
     }
+
+    deleteEmployee = async(id) =>{
+        try{
+            await axios.delete(`http://localhost:3001/api/emp/employees?eid=${id}`);
+            this.getEmployees()
+        }catch (error){
+            console.log(error);
+        }
+    }
     
   render() {
     return (
         <div className='columns'>
         <div className='column is-half'>
+            <Link to="add" className='button is-success'>Add New Employee</Link>
             <table className='table is-striped is-fullwidth mt-5'>
                 <thead>
                     <tr>
@@ -51,8 +62,8 @@ export default class employeeList extends Component {
                             <td>{employee.gender}</td>
                             <td>{employee.salary}</td>
                             <td>
-                                <button className='button is-info is-small'>Edit</button>
-                                <button className='button is-danger is-small'>Danger</button>
+                                <Link to={`/api/emp/employees/${employee._id}`} className='button is-info is-small'>Edit</Link>
+                                <button onClick={() => this.deleteEmployee(employee._id)} className='button is-danger is-small'>Danger</button>
                             </td>
                         </tr>
                     ))}
